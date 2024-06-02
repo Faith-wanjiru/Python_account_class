@@ -1,0 +1,117 @@
+    # DEPOSIT/ WITHDRAW
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            print(f"Deposited{amount}.New balance is {balance}.")
+        else:
+            print("Deposit amount must be positive")
+
+    def withdraw(self, amount):
+        if amount > 0:
+            if amount <= self.__balance:
+                self.__balance -= amount 
+                print(f"withdrew{amount}. New balance is {self.__balance}")
+            else:
+                print("Insufficient funds.")
+        else:
+                print ("withdrawal amount must be positive.")
+
+    def get_balance(self):
+        return self.__balance  
+
+            #   View Account Details: Method to display the account owner's details and current balance
+
+    def view_account_details(self):
+        print(f"Account Number: {self.account_number}")
+        print(f"Account Holder: {self.owner_name}")
+        print(f"Current Balance: {self.__balance}")
+
+
+
+#   Change Account Owner: Method to update the account owner's information.
+
+    def change_account_owner(self, new_owner_name):
+        self.owner_name = new_owner_name
+        print(f"Account owner has been updated to: {self.owner_name}") 
+
+        # Account Statement: Method to generate a statement of recent transactions.
+
+    def generate_statement(self):
+        print("Recent Transactions:")  
+
+        #   Set Overdraft Limit: Method to set an overdraft limit for the account.
+
+    def set_overdraft_limit(self, new_limit):
+        self.overdraft_limit = new_limit
+        print(f"overdraft limit has been updated to: {self.overdraft_limit}")
+
+       # Interest Calculation: Method to calculate and apply interest to the balance.
+
+    def apply_interest(self, interest_rate):
+        if interest_rate > 0:
+            interest = self.__balance*(interest_rate/100)
+            self.__balance += interest
+            print(f"Applied interest of {interest_rate}%. New balance is {self.__balance}.")
+        else: 
+            print("Interest rate must be positive")
+    
+    # Freeze/Unfreeze Account: Methods to freeze and unfreeze the account for security reasons.
+
+    def freeze_account(self):
+        self.is_frozen = True
+        print("The account has been frozen")
+
+    def unfreeze_account(self):
+     self.is_frozen = False
+    print(f"The account has been unfrozen.")
+
+    #  Transaction History: Method to retrieve the history of all transactions made on the account.
+
+    def get_transaction_history(self):
+        return self.get_transaction_history
+    
+    # Set Minimum Balance: Method to enforce a minimum balance requirement.
+
+    def set_minimum_balance(self, minimum_balance):
+        if minimum_balance >= 0:
+            self.minimum_balance = minimum_balance
+            print(f"Minimum balance requirement set to{self.minimum_balance}")
+        else:
+            ("Minimum balance must be non_negative.")
+
+
+     # Transfer Funds: Method to transfer funds from one account to another.
+   
+
+    def transfer(self, target_account, amount):
+        if self.is_frozen:
+            print("Account is frozen. Cannot perform operations.")
+            return
+        
+        if target_account.is_frozen:
+            print("Target account is frozen. Cannot perform operations.")
+            return
+
+        if amount > 0:
+            if (self.__balance - amount) >= self.minimum_balance:
+                self.__balance -= amount
+                target_account.balance += amount
+                self.__add_transaction('transfer_out', amount, target_account)
+                target_account._add_transaction('transfer_in', amount, self)
+                print(f"Transferred {amount} to account {target_account.account_number}. New balance is {self.__balance.}")
+            else:
+                print(f"Insufficient funds. Minimum balance requirement of {self.minimum_balance:.2f} must be maintained.")
+        else:
+            print("Transfer amount must be positive.")
+
+            # Close Account: Method to close the account and perform necessary cleanup.
+
+        def close_account(self):
+         if self.is_closed:
+            print("Account is already closed.")
+            return
+        self.is_frozen = False
+        self.is_closed = True
+        self.balance = 0.0
+        self._add_transaction('account_closed', 0)
+        print("The account has been closed.")
